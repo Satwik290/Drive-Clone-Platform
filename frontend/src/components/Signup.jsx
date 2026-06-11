@@ -44,12 +44,12 @@ export default function Signup() {
           <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
             <div>
               <label style={{display: 'block', marginBottom: '8px', fontWeight: '600', color: 'var(--text-secondary)'}}>Email Address</label>
-              <input type="email" style={{width: '100%', padding: '14px 20px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border-color)', outline: 'none', fontSize: '1rem'}} placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+              <input type="email" style={{width: '100%', padding: '14px 20px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border-color)', outline: 'none', fontSize: '1rem'}} placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" required />
             </div>
             
             <div>
               <label style={{display: 'block', marginBottom: '8px', fontWeight: '600', color: 'var(--text-secondary)'}}>Password</label>
-              <input type="password" style={{width: '100%', padding: '14px 20px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border-color)', outline: 'none', fontSize: '1rem'}} placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
+              <input type="password" style={{width: '100%', padding: '14px 20px', borderRadius: 'var(--radius-md)', border: '2px solid var(--border-color)', outline: 'none', fontSize: '1rem'}} placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" required />
             </div>
             
             <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '10px', width: '100%', padding: '16px', fontSize: '1.1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
