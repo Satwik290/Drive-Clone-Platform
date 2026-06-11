@@ -22,12 +22,7 @@ exports.getFolders = async (req, res) => {
     
     let currentFolder = null;
     if (parentId) {
-      const Folder = require('../models/Folder');
-      const doc = await Folder.findOne({ _id: parentId, userId: req.userId });
-      if (doc) {
-        currentFolder = doc.toObject();
-        currentFolder.size = await folderService.getFolderSize(parentId);
-      }
+      currentFolder = await folderService.getCurrentFolder(parentId, req.userId);
     }
 
     res.json({ currentFolder, folders });

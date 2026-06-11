@@ -5,6 +5,7 @@ class ImageService {
   async getImages(folderId, userId, page = 1, limit = 50) {
     const skip = (page - 1) * limit;
     return await Image.find({ folderId, userId })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
   }

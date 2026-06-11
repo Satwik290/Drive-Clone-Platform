@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Folder, FileImage, Plus, LogOut, HardDrive, Upload, MoreVertical, Menu, X, CheckCircle, AlertCircle, Search, LayoutGrid, Clock } from 'lucide-react';
@@ -31,15 +31,15 @@ export default function Dashboard() {
   const [activeMenuId, setActiveMenuId] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  const addToast = (message, type = 'success') => {
+  const addToast = useCallback((message, type = 'success') => {
     const id = Date.now();
     setToasts(prev => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, 3000);
-  };
+  }, []);
 
-  const fetchContents = async () => {
+  const fetchContents = useCallback(async () => {
     setLoading(true);
     try {
       const folderRes = await api.get(`/folders/${folderId || 'null'}?page=${page}&limit=50`);
@@ -53,11 +53,11 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [folderId, page, addToast]);
 
   useEffect(() => {
     fetchContents();
-  }, [folderId, page]);
+  }, [fetchContents]);
 
   useEffect(() => {
     const handleClickOutside = () => setActiveMenuId(null);
@@ -326,7 +326,7 @@ export default function Dashboard() {
             {(!loading && (folders.length === 50 || images.length === 50 || page > 1)) && (
               <div className="pagination">
                 <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>Previous</button>
-                <button onClick={() => setPage(p => p + 1)}>Next</button>
+                <button disabled={folders.length < 50 && images.length < 50} onClick={() => setPage(p => p + 1)}>Next</button>
               </div>
             )}
           </div>

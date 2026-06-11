@@ -9,4 +9,6 @@ const imageSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 
+imageSchema.index({ folderId: 1, userId: 1 });
+
 module.exports = mongoose.model('Image', imageSchema);

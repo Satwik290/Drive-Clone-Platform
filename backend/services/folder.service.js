@@ -23,15 +23,18 @@ class FolderService {
   async getFolders(parentId, userId, page = 1, limit = 50) {
     const skip = (page - 1) * limit;
     const folders = await Folder.find({ parentId, userId })
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
-    const foldersWithSize = await Promise.all(folders.map(async (f) => {
-      const size = await this.getFolderSize(f._id);
-      return { ...f.toObject(), size };
-    }));
+    return folders.map(f => f.toObject());
+  }
 
-    return foldersWithSize;
+  async getCurrentFolder(folderId, userId) {
+    const folder = await Folder.findOne({ _id: folderId, userId });
+    if (!folder) return null;
+    const size = await this.getFolderSize(folderId);
+    return { ...folder.toObject(), size };
   }
 
   async renameFolder(id, userId, newName) {
