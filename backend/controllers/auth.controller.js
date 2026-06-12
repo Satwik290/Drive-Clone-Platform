@@ -19,8 +19,10 @@ exports.signup = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.cookie('token', token, { 
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/'
     });
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
@@ -40,8 +42,10 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.cookie('token', token, { 
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/'
     });
     res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
   } catch (error) {
@@ -52,8 +56,9 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    secure: true,
+    sameSite: 'none',
+    path: '/'
   });
   res.json({ message: 'Logged out successfully' });
 };
@@ -151,8 +156,10 @@ exports.demoLogin = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.cookie('token', token, { 
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict'
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/'
     });
     res.json({ message: 'Logged in successfully', user: { id: user._id, email: user.email } });
   } catch (error) {

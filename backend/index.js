@@ -10,7 +10,19 @@ const imageRoutes = require('./routes/v1/image.routes');
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// 1. CRITICAL: Trust the Render reverse proxy to allow 'secure' cookies over HTTPS
+app.set('trust proxy', 1);
+
+// 2. CRITICAL: Configure CORS to allow your exact production frontend URL (NO trailing slash)
+app.use(cors({ 
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://drive-clone-frontend.onrender.com' 
+    : 'http://localhost:5173', 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-idempotency-key']
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 
