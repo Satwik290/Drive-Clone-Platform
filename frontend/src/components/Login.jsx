@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { HardDrive, ArrowRight } from 'lucide-react';
+import { HardDrive, ArrowRight, Briefcase } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useContext(AuthContext);
+  const { login, demoLogin } = useContext(AuthContext);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -17,6 +17,17 @@ export default function Login() {
       await login(email, password);
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    try {
+      await demoLogin();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Demo login failed');
     } finally {
       setLoading(false);
     }
@@ -54,6 +65,21 @@ export default function Login() {
               {loading ? 'Signing in...' : <>Sign In <ArrowRight size={20} /></>}
             </button>
           </form>
+
+          <div style={{ display: 'flex', alignItems: 'center', margin: '8px 0', color: 'var(--text-secondary)' }}>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+            <span style={{ padding: '0 12px', fontSize: '0.85rem', fontWeight: '700', letterSpacing: '0.05em' }}>OR</span>
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-color)' }}></div>
+          </div>
+
+          <button 
+            type="button" 
+            className="btn-demo" 
+            disabled={loading} 
+            onClick={handleDemoLogin}
+          >
+            {loading ? 'Signing in...' : <><Briefcase size={20} /> Recruiter Demo Login</>}
+          </button>
           
           <div style={{ textAlign: 'center', marginTop: '8px', fontSize: '1rem', color: 'var(--text-secondary)' }}>
             Don't have an account? <Link to="/signup" style={{ color: 'var(--primary-color)', textDecoration: 'none', fontWeight: '700' }}>Create one for free</Link>

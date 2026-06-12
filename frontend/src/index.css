@@ -706,3 +706,33 @@ h1, h2, h3, h4, h5, h6, .brand-text {
   .content-area { padding: 24px; }
   .grid-container { grid-template-columns: 1fr; gap: 16px; }
 }
+
+.btn-demo {
+  background: rgba(79, 70, 229, 0.05);
+  border: 2px dashed var(--primary-color);
+  color: var(--primary-color);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.btn-demo:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.1);
+  border-style: solid;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.15);
+}
+
+.btn-demo:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import api from '../api/axios';
 
 export const AuthContext = createContext();
@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await api.get('/auth/me');
         setUser(res.data);
-      } catch (err) {
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);
@@ -26,6 +26,11 @@ export const AuthProvider = ({ children }) => {
     setUser(res.data.user);
   };
 
+  const demoLogin = async () => {
+    const res = await api.post('/auth/demo-login');
+    setUser(res.data.user);
+  };
+
   const signup = async (email, password) => {
     await api.post('/auth/signup', { email, password });
   };
@@ -36,7 +41,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, demoLogin, signup, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
